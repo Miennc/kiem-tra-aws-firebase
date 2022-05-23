@@ -1,7 +1,14 @@
 <template>
 <div>
+    
     <!-- This is a simple todo app design using tailwind css -->
     <div class="flex-col bg-gray-800 h-screen w-screen flex items-center justify-center font-sans ">
+                <div class="flex mt-4">
+                    <input v-model="search" class="border  border-gray-800 focus:border-blue-500 rounded w-full py-2 px-3 mr-4 text-black" placeholder="enter search "/>
+                    <!-- Add button -->
+                  <button @click.prevent="handSearch"  class="bg-gray-700 p-2 rounded-lg text-white">search</button>
+                </div>
+
         <div class="bg-gray-600 rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg md:max-w-2xl">
             <div class="mb-4">
                 <h1 class="text-white font-bold text-2xl text-center">Todo List</h1>
@@ -18,7 +25,7 @@
                 </div>
             </div>
             <!-- delete button -->
-            <div>
+            <div >
 
                 <div class="flex mb-4 items-center" v-for="(todo, index) in todos" :key="index">
                     <p class=" font-bold text-xl w-full text-white">
@@ -32,9 +39,14 @@
                             <path d="M12 2h8v2h-8z" fill="currentColor"></path>
                         </svg>
                     </button>
+                 <nuxt-link :to="{ name: 'EditNote', query: { id: todo.id }}">
+                          <button class="ml-2 text-white bg-gray-500 p-2 rounded-xl">edit</button>
+                 </nuxt-link>
                 </div>
-
             </div>
+            
+
+             
             <!-- Completed -->
         </div>
         <!-- End of file -->
@@ -70,6 +82,7 @@ export default {
         return {
             msg: "",
             todos: [],
+            search:'',
         };
     },
     async mounted() {
@@ -105,6 +118,12 @@ export default {
        async remove(id) {
         const docRef = doc(db, 'todos', id);
         await deleteDoc(docRef);
+        },
+
+
+        handSearch (){
+         this.todos = this.todos.filter(todo => todo.content.includes(this.search))
+         this.search="";
         }
     }
 }

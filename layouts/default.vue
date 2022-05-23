@@ -1,7 +1,6 @@
 <template>
   <div class="overflow-x-hidden bg-gray-100 container mx-auto">
     <nuxt/> 
-    <Todo/>
   </div>
 </template>
 
